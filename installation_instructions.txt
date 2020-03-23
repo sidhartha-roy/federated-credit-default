@@ -1,0 +1,5 @@
+conda install ecos  
+conda install CVXcanon  
+pip install fancyimpute
+# the scipy version has to be the following
+pip install scipy==1.2.1
