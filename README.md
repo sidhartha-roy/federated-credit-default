@@ -8,6 +8,9 @@ create a folder named data and move the downloaded files in that folder
 ## Environment
 
   conda create -n pysyft python=3
+ 
   conda activate pysyft
+ 
   conda install jupyter notebook
+ 
   pip install -r requirements.txt
