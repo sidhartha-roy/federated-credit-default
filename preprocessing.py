@@ -1,19 +1,13 @@
 import pandas as pd
 import os
-import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.preprocessing import LabelEncoder
 from fancyimpute import MICE
 from config import cfg
 from dataloader import DataLoader
 
-from imblearn.under_sampling import RandomUnderSampler
-from imblearn.over_sampling import RandomOverSampler
 
-
-class Preprocessor:
+class Imputer:
     def __init__(self, data):
         self.data = data
         self.column_titles = list(self.data.df)
@@ -53,8 +47,8 @@ def main():
     data = DataLoader()
     data.load()
 
-    pp = Preprocessor(data)
-    df = pp.transform()
+    imputer = Imputer(data)
+    df = imputer.transform()
 
 if __name__ == "__main__":
     main()
