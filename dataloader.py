@@ -4,8 +4,11 @@ import os
 from sklearn.model_selection import StratifiedShuffleSplit
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.preprocessing import StandardScaler
+import torch
+from torch.utils.data import TensorDataset, DataLoader
 
-class DataLoader:
+
+class DatasetLoader:
     def __init__(self):
         self.dataset_path = cfg.DATASETS.PATH
         self.filename = cfg.DATASETS.FILENAME
@@ -16,8 +19,14 @@ class DataLoader:
         self.df_Y_train = None
         self.df_X_test = None
         self.df_Y_test = None
-        self.df_X_train_ros = None
-        self.df_Y_train_ros = None
+        self.torch_X_train = None
+        self.torch_Y_train = None
+        self.torch_X_test = None
+        self.torch_Y_test = None
+        self.train = None
+        self.test = None
+        self.train_loader = None
+        self.test_loader = None
 
     def load(self):
         dataset_path = cfg.DATASETS.PATH
@@ -53,14 +62,26 @@ class DataLoader:
         self.df_X_train = pd.DataFrame(std_scaler.fit_transform(self.df_X_train), columns=x_col_titles)
         self.df_X_test = pd.DataFrame(std_scaler.fit_transform(self.df_X_test), columns=x_col_titles)
 
+    def to_PyTorch(self):
+        torch.manual_seed(cfg.ARGS.SEED)
+        self.torch_X_train = torch.from_numpy(self.df_X_train.to_numpy()).float()
+        self.torch_Y_train = torch.from_numpy(self.df_Y_train.to_numpy().flatten()).float()
+        self.torch_X_test = torch.from_numpy(self.df_X_test.to_numpy()).float()
+        self.torch_Y_test = torch.from_numpy(self.df_Y_test.to_numpy().flatten()).float()
+        self.train = TensorDataset(self.torch_X_train, self.torch_Y_train)
+        self.test = TensorDataset(self.torch_X_test, self.torch_Y_test)
+        self.train_loader = DataLoader(self.train, batch_size=cfg.ARGS.BATCH_SIZE, shuffle=True)
+        self.test_loader = DataLoader(self.test, batch_size=cfg.ARGS.BATCH_SIZE, shuffle=True)
+
 def main():
-    data = DataLoader()
+    data = DatasetLoader()
     #data.load()
     data.load_imputed()
     data.train_test_split()
     data.oversample_training_data()
     data.standard_scale()
-    print("Length of oversampled data", data.df_Y_train_ros.shape)
+    data.to_PyTorch()
+    print("Length of oversampled data", data.df_Y_train.shape)
 
 
 if __name__ == "__main__":

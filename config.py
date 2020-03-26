@@ -27,3 +27,11 @@ __C.CONST.TARGET_NAME                      = 'TARGET'
 __C.CONST.STRAT_TYPE                       = 'TARGET'
 __C.CONST.TEST_RATIO                       = 0.2
 __C.CONST.RANDOM_SEED                      = 25
+
+__C.ARGS                                   = edict()
+__C.ARGS.EPOCHS                            = 20
+__C.ARGS.LR                                = 0.005
+__C.ARGS.TEST_BATCH_SIZE                   = 10
+__C.ARGS.BATCH_SIZE                        = 10
+__C.ARGS.LOG_INTERVAL                      = 1000
+__C.ARGS.SEED                              = 1
