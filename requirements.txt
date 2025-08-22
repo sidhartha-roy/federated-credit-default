@@ -23,7 +23,7 @@ fancyimpute==0.5.4
 fastcache==1.1.0
 Flask==1.1.1
 Flask-SocketIO==4.2.1
-future==0.18.2
+future==1.0.0
 gast==0.3.3
 grpcio==1.23.0
 h5py==2.9.0
